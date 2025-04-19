@@ -1,20 +1,20 @@
 import os
 
-# Disable GPU completely
+# Disable GPU completely (MUST be done before TensorFlow is imported)
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # Optional: Suppresses TensorFlow info messages
-os.environ['XLA_FLAGS'] = '--xla_gpu_cuda_data_dir='  # Disable XLA looking for CUDA
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+os.environ['XLA_FLAGS'] = '--xla_gpu_cuda_data_dir='
 
-
+# Now import TensorFlow and other modules
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import pandas as pd
 import numpy as np
 import joblib
-from tensorflow.keras.models import load_model
-import os
 import matplotlib.pyplot as plt
+import tensorflow as tf
+from tensorflow.keras.models import load_model
 
-# Print CPU usage confirmation
+# Confirm that TensorFlow is running on CPU
 print("TensorFlow running on:", "GPU" if tf.config.list_physical_devices('GPU') else "CPU")
 
 app = Flask(__name__)
