@@ -1,11 +1,14 @@
 import os
 
-# MUST come before importing TensorFlow
+# Force CPU usage and suppress TensorFlow logs
 os.environ['CUDA_VISIBLE_DEVICES'] = ''
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # Suppress TF logs
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 os.environ['XLA_FLAGS'] = '--xla_gpu_cuda_data_dir='
 os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'false'
-os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'  # Optional: disables some optimizations causing GPU usage
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+
+import tensorflow as tf
+print("TensorFlow running on:", "GPU" if tf.config.list_physical_devices('GPU') else "CPU")
 
 
 # Now import TensorFlow and other modules
@@ -17,8 +20,6 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 
-# Confirm that TensorFlow is running on CPU
-print("TensorFlow running on:", "GPU" if tf.config.list_physical_devices('GPU') else "CPU")
 
 app = Flask(__name__)
 app.secret_key = "my_secret_key"  # Needed for flash and session handling
