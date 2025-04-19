@@ -1,5 +1,10 @@
 import os
+
+# Disable GPU completely
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # Optional: Suppresses TensorFlow info messages
+os.environ['XLA_FLAGS'] = '--xla_gpu_cuda_data_dir='  # Disable XLA looking for CUDA
+
 
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import pandas as pd
