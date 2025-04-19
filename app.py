@@ -14,6 +14,9 @@ from tensorflow.keras.models import load_model
 import os
 import matplotlib.pyplot as plt
 
+# Print CPU usage confirmation
+print("TensorFlow running on:", "GPU" if tf.config.list_physical_devices('GPU') else "CPU")
+
 app = Flask(__name__)
 app.secret_key = "my_secret_key"  # Needed for flash and session handling
 
