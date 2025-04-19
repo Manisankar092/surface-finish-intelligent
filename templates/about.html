@@ -1,0 +1,322 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - Surface Intelligence{% endblock %}
+
+{% block content %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+<style>
+    body {
+        background-color: #fff;
+    }
+
+    .icon-box {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 25px;
+        height: 100%;
+        transition: all 0.3s ease;
+    }
+    .icon-box:hover {
+        background: #e2f0ff;
+        transform: translateY(-5px);
+    }
+    .icon-box i {   
+        font-size: 2.5rem;
+        color: #000000;
+    }
+
+    .section-title {
+        border-left: 5px solid #0e36e9;
+        padding-left: 15px;
+        margin-bottom: 30px;
+        color: #58646d;
+        text-shadow: 0 0 10px rgb(137, 139, 230);
+    }
+
+    .text-section {
+        margin-bottom: 40px;
+    }
+
+    .image-box {
+        border: 2px solid #edf0f3;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .image-box:hover {
+        transform: scale(1.05);
+    }
+
+    .image-box img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .image-box:hover img {
+        transform: scale(1.1);
+    }
+
+    p {
+        text-align: justify;
+    }
+</style>
+
+<div class="container py-5">
+
+
+  <!-- ✅ Add Animate.css & AOS CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+<style>
+ 
+
+  /* Navbar styling - compact size */
+  .navbar {
+    padding-top: 2px !important;  /* Reduced top padding */
+    padding-bottom: 2px !important;  /* Reduced bottom padding */
+    z-index: 9999; /* Ensuring it's above the video and the line */
+  }
+
+  /* Logo Only */
+  .navbar-brand img {
+    height: 50px;  /* You can adjust this value for the logo size */
+    width: auto;
+  }
+
+  /* Orange line directly below the navbar */
+  .orange-line {
+    position: fixed;
+    top: 56px; /* Navbar height */
+    left: 0;
+    width: 100%;
+    height: 8px;  /* Increased height for a broader line */
+    background-color: rgb(255, 103, 2);
+    z-index: 10000; /* Higher than navbar */
+  }
+
+  /* Navbar links styling */
+  .navbar-nav {
+    margin-left: auto;
+  }
+
+  .nav-item {
+    padding: 0 15px;  /* Space between the navbar links */
+  }
+
+  .nav-link {
+    color: white !important;  /* Ensures text color is white */
+  }
+
+  .nav-link:hover {
+    color: rgb(255, 103, 2) !important;  /* Hover effect for links */
+  }
+</style>
+
+
+<!-- ✅ Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container-fluid px-4">
+    <!-- Logo Only -->
+    <a class="navbar-brand d-flex align-items-center" href="{{ url_for('home') }}">
+      <img src="{{ url_for('static', filename='image/11.png') }}" alt="Surface Finish Logo">
+    </a>
+
+    <!-- Toggle Button for Mobile -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar Links -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('about') }}">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('predict') }}">Predict</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ✅ Orange Line -->
+<div class="orange-line"></div>
+
+
+    <!-- Hero Section -->
+    <div class="row justify-content-center mb-5 animate__animated animate__fadeInDown">
+        <div class="col-lg-10 text-center">
+            <h1 class="display-4 fw-bold" style="color: #494b4e;">About Surface Finish Intelligence</h1>
+            <p class="lead text-muted">
+                Bridging AI and advanced machining through deep learning. Predict, analyze, and optimize surface roughness with precision.
+            </p>
+        </div>
+    </div>
+
+    <!-- Project Background Section -->
+    <div class="text-section animate__animated animate__fadeInUp">
+        <div class="section-title">
+            <h3>Project Background</h3>
+        </div>
+        <div class="row align-items-center">
+            <!-- Left Column (Text) -->
+            <div class="col-md-6">
+                <p>Our journey commenced with a profound realization: conventional methodologies for predicting surface finish frequently lack the desired level of accuracy. This inherent limitation often leads to a cascade of detrimental effects within manufacturing environments, including inflated production expenses, protracted setup durations, and a compromise in the overall quality of the final product. However, the emergence of artificial intelligence (AI) and machine learning (ML) has illuminated a transformative pathway for the precision machining sector. The potential to revolutionize this industry by leveraging these advanced technologies has become increasingly apparent.</p>
+                <p>With a central emphasis on achieving real-time prediction capabilities and dynamic optimization strategies, our proposed system is meticulously designed to empower manufacturers with the confidence necessary to consistently meet the increasingly complex and ever-changing demands of the contemporary market. By providing timely and accurate insights into surface finish outcomes, our solution will enable proactive adjustments to machining parameters, ultimately leading to enhanced efficiency, reduced waste, and superior product quality.</p>
+            </div>
+
+            <!-- Right Column (Image) -->
+            <div class="col-md-6">
+                <div class="image-box animate__animated animate__fadeInRight">
+                    <img src="{{ url_for('static', filename='image/5.png') }}" alt="Project Background Image">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- How It Works Section -->
+    <div class="text-section animate__animated animate__fadeInUp">
+        <div class="row align-items-center">
+            <!-- Left Column (Image) -->
+            <div class="col-md-6">
+                <div class="image-box animate__animated animate__fadeInLeft">
+                    <img src="{{ url_for('static', filename='image/10.png') }}" alt="How It Works Image">
+                </div>
+            </div>
+
+            <!-- Right Column (Text) -->
+            <div class="col-md-6">
+                <div class="section-title">
+                    <h3>How It Works</h3>
+                </div>
+                <p>The Surface Finish Intelligence platform operates on a deep learning-based framework that analyzes historical CNC machining data. We begin by gathering machining parameters like spindle speed, feed rate, depth of cut (DOC), and cutting force, which significantly impact the final surface quality. This data is processed through a trained TensorFlow model, which identifies patterns and relationships between these factors and the resulting surface roughness (Ra).</p>
+                <p>Once the model is trained, it can predict the surface roughness of future machining operations in real-time, with minimal human intervention. The platform not only provides predictions but also offers optimization suggestions to improve machining performance and reduce defects. As more data is collected, the model continues to learn and refine its predictions, offering even more accurate and reliable results over time.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Benefits to Manufacturers Section -->
+    <div class="text-section animate__animated animate__fadeInUp">
+        <div class="section-title">
+            <h3>Benefits to Manufacturers</h3>
+        </div>
+        <ul>
+            <li><strong>Increased Efficiency:</strong> The Surface Finish Intelligence system significantly reduces trial-and-error setup time by providing accurate predictions of surface quality before machining begins. This leads to fewer rework cycles and more efficient use of resources.</li>
+            <li><strong>Cost Savings:</strong> By optimizing tool life and reducing waste, manufacturers can lower production costs. The platform helps in making data-driven decisions that reduce material waste and machine downtime.</li>
+            <li><strong>Improved Quality Control:</strong> With precise surface roughness predictions, quality engineers can maintain consistent product quality throughout the production process, ensuring that each part meets strict standards.</li>
+            <li><strong>Scalable Solution:</strong> Whether you’re working with small batch production or large-scale manufacturing, the system is scalable and adaptable to different operational requirements.</li>
+        </ul>
+    </div>
+
+    <!-- Future Vision Section -->
+    <div class="text-section animate__animated animate__fadeInUp">
+        <div class="section-title">
+            <h3>Future Vision</h3>
+        </div>
+        <p>As we progress in the development and refinement of our solution, we envision a future where artificial intelligence (AI) and machine learning (ML) are deeply embedded in every phase of the manufacturing process. The integration of these advanced technologies holds the promise of transforming traditional manufacturing methods into smart, adaptive systems capable of making real-time decisions with minimal human intervention. Our ambition goes beyond the mere prediction of surface roughness. We aim to develop a system that not only anticipates surface finish outcomes but also dynamically adjusts machining parameters in real time. Such capabilities will enable automatic optimizations that enhance precision, improve product quality, and significantly reduce production delays and errors.</p>
+        <p>Central to this vision is the continuous expansion of our dataset and the ongoing refinement of our machine learning algorithms. With each machining operation, the system will gather more data, learn from outcomes, and evolve into a more intelligent and efficient model. Over time, this iterative process will help us build a robust ecosystem that adapts to new challenges, materials, and machining conditions without the need for constant manual input.</p>
+        <p>Ultimately, our goal is to be at the forefront of a fully automated, AI-powered manufacturing revolution. In this future, quality control will be faster, more accurate, and more cost-effective than ever before. By embracing the power of AI, we aim to lead the industry into a new era of innovation, where smart manufacturing becomes the standard and not the exception.</p>    
+    </div>
+
+    <!-- Meet the Team Section -->
+<div class="text-section animate__animated animate__fadeInUp my-5">
+    <div class="section-title text-center mb-4">
+        <h3>Meet the Team</h3>
+        <p class="text-muted">
+            Our team consists of dedicated engineers, data scientists, and industry experts who are passionate about revolutionizing the machining industry through technology.
+        </p>
+    </div>
+
+    <!-- Team Members Row -->
+    <div class="row justify-content-center text-center">
+        <!-- Team Member 1 -->
+        <div class="col-md-3 d-flex">
+            <div class="team-member w-100 p-3 shadow-sm animate__animated animate__zoomIn h-100">
+                <div class="image-box mx-auto mb-3 d-flex align-items-center justify-content-center bg-light" 
+                     style="width: 200px; height: 200px; overflow: hidden;">
+                    <img src="{{ url_for('static', filename='image/1.png') }}" alt="Manisankar A" 
+                         class="img-fluid" 
+                         style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                </div>
+                <h5 class="fw-bold">Manisankar A</h5>
+                <p class="text-muted">Website Design & Project Leadership</p>
+            </div>
+        </div>
+        
+
+        <!-- Team Member 2 -->
+        <div class="col-md-3 d-flex">
+            <div class="team-member w-100 p-3 shadow-sm animate__animated animate__zoomIn h-100">
+                <div class="image-box mx-auto mb-3" style="width: 200px; height: 200px;">
+                    <img src="{{ url_for('static', filename='image/2.png') }}" alt="Hariharan R" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <h5 class="fw-bold">Hariharan R</h5>
+                <p class="text-muted">Machine Learning Model Developer</p>
+            </div>
+        </div>
+
+        <!-- Team Member 3 -->
+        <div class="col-md-3 d-flex">
+            <div class="team-member w-100 p-3 shadow-sm animate__animated animate__zoomIn h-100 d-flex flex-column align-items-center">
+                <div class="image-box mb-3 d-flex align-items-center justify-content-center bg-light"
+                     style="width: 200px; height: 200px; overflow: hidden;">
+                    <img src="{{ url_for('static', filename='image/3.png') }}" alt="Sam Rennius J"
+                         class="img-fluid"
+                         style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                </div>
+                <h5 class="fw-bold text-center">Sam Rennius J</h5>
+                <p class="text-muted text-center mb-0">CNC Data Collection & Analysis</p>
+            </div>
+        </div>
+        
+
+        <!-- Team Member 4 -->
+        <div class="col-md-3 d-flex">
+            <div class="team-member w-100 p-3 shadow-sm animate__animated animate__zoomIn h-100">
+                <div class="image-box mx-auto mb-3" style="width: 200px; height: 200px;">
+                    <img src="{{ url_for('static', filename='image/4.png') }}" alt="Pushpakanth" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <h5 class="fw-bold">Pushpakanth N</h5>
+                <p class="text-muted">Research Lead – Product and Process</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Join Us Section -->
+    <div class="text-section animate__animated animate__fadeInUp">
+        <div class="section-title">
+            <h3>Join Us in Shaping the Future of Manufacturing</h3>
+        </div>
+        <p>The manufacturing industry is on the brink of a technological revolution, and we are proud to be at the forefront of it. Our AI-driven surface finish prediction platform is just the beginning. As we continue to innovate, we invite manufacturers, engineers, and technology enthusiasts to join us in shaping the future of smart manufacturing.</p>
+        <p>Whether you are looking to optimize your operations, reduce costs, or enhance product quality, Surface Finish Intelligence provides the tools you need to succeed in a competitive and evolving industry.</p>
+    </div>
+
+</div>
+
+
+<!-- 📌 Footer -->
+<footer class="bg-dark text-white text-center py-3 mt-auto">
+    <div class="container">
+      <small>CC@2025 Surface Finish Intelligence | All rights reserved.</small>
+    </div>
+  </footer>
+
+  
+{% endblock %}

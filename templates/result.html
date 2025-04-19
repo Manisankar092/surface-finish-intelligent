@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Prediction Results{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center">Prediction Results</h1>
+    <hr>
+
+    <!-- Display Predictions Table -->
+    {% if predictions %}
+    <h3>Prediction Results:</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Speed</th>
+                <th>Feed</th>
+                <th>DOC</th>
+                <th>Predicted Surface Finish</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for prediction in predictions %}
+            <tr>
+                <td>{{ prediction['Speed'] }}</td>
+                <td>{{ prediction['Feed'] }}</td>
+                <td>{{ prediction['DOC'] }}</td>
+                <td>{{ prediction['Predicted Surface Finish'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    <!-- Display Graphs -->
+    <h3>Loss Curve</h3>
+    <img src="{{ url_for('static', filename='loss_curve.png') }}" alt="Loss Curve" width="600">
+
+    <h3>Residual Plot</h3>
+    <img src="{{ url_for('static', filename='residuals.png') }}" alt="Residual Plot" width="600">
+
+    <h3>Actual vs Predicted</h3>
+    <img src="{{ url_for('static', filename='actual_vs_pred.png') }}" alt="Actual vs Predicted" width="600">
+
+    <h3>MAE Curve</h3>
+    <img src="{{ url_for('static', filename='mae_curve.png') }}" alt="MAE Curve" width="600">
+
+    <br><br>
+    <a href="{{ url_for('home') }}" class="btn btn-primary">Back to Home</a>
+</div>
+{% endblock %}

@@ -1,0 +1,283 @@
+{% extends "base.html" %}
+
+{% block title %}Predict - Surface Finish App{% endblock %}
+
+{% block content %}
+
+<!-- ✅ Animate.css & AOS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+<style>
+  #bgVideo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+  }
+
+  .navbar {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    z-index: 9999;
+  }
+
+  .navbar-brand img {
+    height: 50px;
+    width: auto;
+  }
+
+  .orange-line {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background-color: rgb(255, 103, 2);
+    z-index: 10000;
+  }
+
+  .navbar-nav {
+    margin-left: auto;
+  }
+
+  .nav-item {
+    padding: 0 15px;
+  }
+
+  .nav-link {
+    color: white !important;
+  }
+
+  .nav-link:hover {
+    color: rgb(255, 103, 2) !important;
+  }
+
+  /* 🟧 Custom Orange Button */
+  .btn-orange {
+    background-color: #ff6702 !important; /* Orange color */
+    border-color: #ff6702 !important;
+    color: white !important;
+  }
+
+  .btn-orange:hover {
+    background-color: #e65a00 !important; /* Darker orange for hover */
+    border-color: #e65a00 !important;
+    color: white !important;
+  }
+
+  /* 🟧 Custom Hover Animation for Upload */
+  .upload-box {
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .upload-box:hover {
+    background-color: #f8f9fa;
+    box-shadow: 0 0 15px rgba(255, 103, 2, 0.6);
+    border-color: rgb(255, 103, 2);
+  }
+
+  .upload-box:hover .predict-btn {
+    display: inline-block;
+    animation: fadeInUp 0.6s ease-in-out;
+  }
+
+  /* 🟧 Fade-in Effect for Predict Button */
+  .predict-btn {
+    display: none;
+    transition: all 0.5s ease-in-out;
+    margin-top: 20px;
+  }
+
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<!-- ✅ Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand d-flex align-items-center" href="{{ url_for('home') }}">
+      <img src="{{ url_for('static', filename='image/11.png') }}" alt="Surface Finish Logo">
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('predict') }}">Predict</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ✅ Orange Line -->
+<div class="orange-line"></div>
+
+<!-- ✅ Main Container -->
+<div class="container mt-5">
+  <h2 class="text-center mb-5">Surface Finish Prediction</h2>
+
+  <!-- 📋 Upload Guidelines Card -->
+  <div class="card mb-4">
+    <div class="card-body bg-white">
+      <h4 class="card-title">Excel File Guidelines</h4>
+      <ul class="list-unstyled ms-3" style="line-height: 1.8;">
+        <li>✔️ File must be in <strong>.xlsx</strong> format.</li>
+        <li>✔️ Must contain exactly 3 columns: <strong>Speed</strong>, <strong>Feed</strong>, <strong>DOC</strong>.</li>
+        <li>✔️ Headers should be in the <strong>first row</strong>.</li>
+        <li>✔️ Avoid blank cells or non-numeric values.</li>
+      </ul>
+
+      <h5 class="mt-4">Example Format:</h5>
+      <div class="table-responsive">
+        <table class="table table-bordered text-center">
+          <thead class="table-light">
+            <tr>
+              <th>Speed</th>
+              <th>Feed</th>
+              <th>DOC</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1200</td><td>0.15</td><td>0.5</td></tr>
+            <tr><td>1400</td><td>0.18</td><td>0.6</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 📂 Upload Form -->
+  <form method="POST" enctype="multipart/form-data">
+    <div class="mb-3 upload-box">
+      <label for="excel_file" class="form-label">Upload Excel File (.xlsx)</label>
+      <input type="file" class="form-control mt-2" name="excel_file" id="excel_file" required>
+
+      <!-- 📤 Predict Button Inside Upload Box -->
+      <div class="predict-btn">
+        <button type="submit" class="btn btn-orange btn-block">Predict</button>
+      </div>
+    </div>
+  </form>
+
+  <hr>
+
+  {% if predictions %}
+  <h4 class="mt-4">📊 Prediction Results:</h4>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover text-center">
+      <thead class="table-light">
+        <tr>
+          <th>Speed</th>
+          <th>Feed</th>
+          <th>DOC</th>
+          <th>Predicted Surface Finish</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in predictions %}
+          <tr>
+            <td>{{ row["Speed"] }}</td>
+            <td>{{ row["Feed"] }}</td>
+            <td>{{ row["DOC"] }}</td>
+            <td>{{ "%.2f"|format(row["Predicted Surface Finish"]) }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <!-- 📉 Plots Section -->
+  <h4 class="mt-5 text-start">📈 Model Evaluation Plots:</h4>
+
+  <!-- Plot 1 -->
+  <div class="text-center my-5">
+    <h5>Loss Curve</h5>
+    <img src="{{ url_for('static', filename='plots/static_plots_loss_curve.png') }}" alt="Loss Curve" class="img-fluid mb-3">
+    <ul class="w-75 mx-auto text-start" style="text-align: justify; line-height: 1.8;">
+      <li>Centered Around Zero: The residuals are evenly distributed around the zero line, indicating that the model's predictions are unbiased, without any systematic over- or under-predictions.</li>
+
+      <li>Random Distribution: The residuals appear randomly scattered, with no clear pattern, which suggests that the model has captured the relationship between the input variables and the output correctly.</li>
+
+      <li>No Clear Trends: The lack of upward or downward trends in the residuals implies that the model does not suffer from heteroscedasticity (changing variance) and has a stable performance across the range of data.</li>
+
+      <li>Balanced Model Fit: The plot shows that the model's errors are uniformly distributed, signifying a good fit. The model's predictions are both accurate and consistent, without being overly optimistic or pessimistic.</li>
+    </ul>
+  </div>
+
+  <!-- Plot 2 -->
+  <div class="text-center my-5">
+    <h5>MAE Curve</h5>
+    <img src="{{ url_for('static', filename='plots/static_plots_mae_curve.png') }}" alt="MAE Curve" class="img-fluid mb-3">
+    <ul class="w-75 mx-auto text-start" style="text-align: justify; line-height: 1.8;">
+      <li>CSteady Decrease in Error: Both the training and validation MAE curves show a consistent decline, especially in the early epochs, indicating that the model is learning effectively.</li>
+
+      <li>Close Alignment of Curves: The training and validation MAE curves stay close together throughout training, suggesting good generalization and no significant overfitting.</li>
+
+      <li>Convergence After ~30 Epochs: The MAE values for both curves begin to stabilize around epoch 30, indicating that the model is approaching convergence.</li>
+
+      <li>Low Final MAE: The final MAE for both training and validation is approximately 0.17, reflecting a relatively low prediction error and a well-trained model.</li>
+    </ul>
+    </ul>
+  </div>
+
+  <!-- Plot 3 -->
+  <div class="text-center my-5">
+    <h5>Actual vs Predicted</h5>
+    <img src="{{ url_for('static', filename='plots/static_plots_ctual_vs_pred.png') }}" alt="Actual vs Predicted" class="img-fluid mb-3">
+    <ul class="w-75 mx-auto text-start" style="text-align: justify; line-height: 1.8;">
+      <li>Positive Correlation: The scatter plot shows a clear positive trend between actual and predicted values, indicating that the model is generally capturing the underlying pattern.</li>
+
+      <li>Ideal Fit Line: The red dashed line represents the ideal case where predicted = actual. Points closely following this line indicate high prediction accuracy.</li>
+
+      <li>Tight Clustering with Some Outliers: Most points are tightly clustered around the ideal line, especially for lower surface finish values. However, some outliers appear at higher values, suggesting slight deviations in prediction performance at those levels</li>
+
+      <li>Good Model Performance: Overall, the plot demonstrates that the ANN model predicts surface finish accurately, with high consistency in the lower and mid-value ranges.</li>
+    </ul>
+    </ul>
+  </div>
+
+  <!-- Plot 4 -->
+  <div class="text-center my-5">
+    <h5>Residuals Plot</h5>
+    <img src="{{ url_for('static', filename='plots/static_plots_esiduals.png') }}" alt="Residual Plot" class="img-fluid mb-3">
+    <ul class="w-75 mx-auto text-start" style="text-align: justify; line-height: 1.8;">
+      <li>Centered Around Zero: Most residuals (Actual - Predicted) are scattered around the zero line, indicating that the model doesn't have a strong bias in over- or under-prediction.</li>
+
+      <li>Low Residual Spread for Low Surface Finish: For actual surface finish values below ~1.5, residuals are tightly clustered, suggesting higher prediction accuracy in this range</li>
+
+      <li>Increased Variance at Higher Values: Residuals become more dispersed as the actual surface finish increases beyond ~1.5, indicating the model’s prediction accuracy decreases slightly at higher surface finish levels.</li>
+
+      <li>Random Distribution: There is no obvious pattern or trend in the residuals, which supports the assumption of homoscedasticity (constant variance), a good sign that the ANN model is fitting the data appropriately.</li>
+    </ul>
+    </ul>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
