@@ -1,3 +1,6 @@
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import pandas as pd
 import numpy as np
