@@ -90,7 +90,7 @@ soupsieve==2.6
 stack-data==0.6.3
 tensorboard==2.19.0
 tensorboard-data-server==0.7.2
-tensorflow==2.19.0
+tensorflow-cpu==2.19.0
 termcolor==3.0.1
 threadpoolctl==3.6.0
 tinycss2==1.4.0
