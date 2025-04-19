@@ -116,42 +116,7 @@ def predict():
 
     return render_template("predict.html", predictions=predictions)
 
-def generate_graphs(df):
-    static_path = os.path.join(app.root_path, 'static')
-    os.makedirs(static_path, exist_ok=True)
 
-    # Loss Curve (placeholder)
-    plt.figure()
-    plt.plot(np.arange(100), np.random.random(100))
-    plt.title("Loss Curve")
-    plt.xlabel("Epoch")
-    plt.ylabel("Loss")
-    plt.tight_layout()
-    plt.savefig(os.path.join(static_path, 'loss_curve.png'))
-    plt.close()
-
-    # Predicted Plot
-    plt.figure()
-    plt.plot(df["Predicted Surface Finish"], label="Predicted")
-    plt.title("Predicted Surface Finish")
-    plt.xlabel("Sample")
-    plt.ylabel("Value")
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig(os.path.join(static_path, 'predicted.png'))
-    plt.close()
-
-    # Residual Plot
-    residuals = np.random.normal(0, 0.1, len(df))  # Placeholder residuals
-    plt.figure()
-    plt.scatter(np.arange(len(residuals)), residuals)
-    plt.axhline(y=0, color='r', linestyle='--')
-    plt.title("Residuals Plot")
-    plt.xlabel("Sample")
-    plt.ylabel("Residual")
-    plt.tight_layout()
-    plt.savefig(os.path.join(static_path, 'residuals.png'))
-    plt.close()
 
 @app.route("/logout")
 def logout():
