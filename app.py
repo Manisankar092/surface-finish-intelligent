@@ -1,9 +1,12 @@
 import os
 
-# Disable GPU completely (MUST be done before TensorFlow is imported)
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+# MUST come before importing TensorFlow
+os.environ['CUDA_VISIBLE_DEVICES'] = ''
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # Suppress TF logs
 os.environ['XLA_FLAGS'] = '--xla_gpu_cuda_data_dir='
+os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'false'
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'  # Optional: disables some optimizations causing GPU usage
+
 
 # Now import TensorFlow and other modules
 from flask import Flask, render_template, request, redirect, url_for, session, flash
