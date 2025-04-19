@@ -15,20 +15,23 @@ import numpy as np
 import joblib
 import matplotlib.pyplot as plt
 
+# Log where TensorFlow is running
 print("TensorFlow running on:", "GPU" if tf.config.list_physical_devices('GPU') else "CPU")
 
 app = Flask(__name__)
 app.secret_key = "my_secret_key"
 
-# Load model and scaler
+# Load model and scaler paths
 model_path = os.path.join(app.root_path, "model.h5")
 scaler_path = os.path.join(app.root_path, "scaler.pkl")
 
-if not os.path.exists(model_path) or not os.path.exists(scaler_path):
-    raise FileNotFoundError("Model or scaler file not found. Please ensure they are available.")
-
-model = tf.keras.models.load_model(model_path)
-scaler = joblib.load(scaler_path)
+try:
+    model = tf.keras.models.load_model(model_path)
+    scaler = joblib.load(scaler_path)
+except Exception as e:
+    print("Model/scaler loading error:", traceback.format_exc())
+    model = None
+    scaler = None
 
 expected_columns = ["Speed", "Feed", "DOC"]
 users = {}
@@ -114,17 +117,20 @@ def predict():
     return render_template("predict.html", predictions=predictions)
 
 def generate_graphs(df):
-    # Graph 1: Placeholder for Loss Curve
+    static_path = os.path.join(app.root_path, 'static')
+    os.makedirs(static_path, exist_ok=True)
+
+    # Loss Curve (placeholder)
     plt.figure()
     plt.plot(np.arange(100), np.random.random(100))
     plt.title("Loss Curve")
     plt.xlabel("Epoch")
     plt.ylabel("Loss")
     plt.tight_layout()
-    plt.savefig(os.path.join(app.root_path, 'static', 'loss_curve.png'))
+    plt.savefig(os.path.join(static_path, 'loss_curve.png'))
     plt.close()
 
-    # Graph 2: Placeholder for Actual vs Predicted
+    # Predicted Plot
     plt.figure()
     plt.plot(df["Predicted Surface Finish"], label="Predicted")
     plt.title("Predicted Surface Finish")
@@ -132,10 +138,10 @@ def generate_graphs(df):
     plt.ylabel("Value")
     plt.legend()
     plt.tight_layout()
-    plt.savefig(os.path.join(app.root_path, 'static', 'predicted.png'))
+    plt.savefig(os.path.join(static_path, 'predicted.png'))
     plt.close()
 
-    # Graph 3: Residual Plot
+    # Residual Plot
     residuals = np.random.normal(0, 0.1, len(df))  # Placeholder residuals
     plt.figure()
     plt.scatter(np.arange(len(residuals)), residuals)
@@ -144,7 +150,7 @@ def generate_graphs(df):
     plt.xlabel("Sample")
     plt.ylabel("Residual")
     plt.tight_layout()
-    plt.savefig(os.path.join(app.root_path, 'static', 'residuals.png'))
+    plt.savefig(os.path.join(static_path, 'residuals.png'))
     plt.close()
 
 @app.route("/logout")
@@ -166,5 +172,6 @@ def contact():
 def health():
     return "OK", 200
 
+# Run for local development (Render uses gunicorn)
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
