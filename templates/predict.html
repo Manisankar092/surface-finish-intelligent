@@ -212,7 +212,71 @@
   </div>
 
   <hr>
+<!-- 📉 Plots Section -->
+  <h4 class="mt-5 text-start">📈 Model Evaluation Plots:</h4>
 
+  <!-- Plot 1 -->
+  <div class="text-center my-5">
+    <h5>Loss Curve</h5>
+    <img src="{{ url_for('static', filename='plots/static_plots_loss_curve.png') }}" alt="Loss Curve" class="img-fluid mb-3">
+    <ul class="w-75 mx-auto text-start" style="text-align: justify; line-height: 1.8;">
+      <li>Centered Around Zero: The residuals are evenly distributed around the zero line, indicating that the model's predictions are unbiased, without any systematic over- or under-predictions.</li>
+
+      <li>Random Distribution: The residuals appear randomly scattered, with no clear pattern, which suggests that the model has captured the relationship between the input variables and the output correctly.</li>
+
+      <li>No Clear Trends: The lack of upward or downward trends in the residuals implies that the model does not suffer from heteroscedasticity (changing variance) and has a stable performance across the range of data.</li>
+
+      <li>Balanced Model Fit: The plot shows that the model's errors are uniformly distributed, signifying a good fit. The model's predictions are both accurate and consistent, without being overly optimistic or pessimistic.</li>
+    </ul>
+  </div>
+
+  <!-- Plot 2 -->
+  <div class="text-center my-5">
+    <h5>MAE Curve</h5>
+    <img src="{{ url_for('static', filename='plots/static_plots_mae_curve.png') }}" alt="MAE Curve" class="img-fluid mb-3">
+    <ul class="w-75 mx-auto text-start" style="text-align: justify; line-height: 1.8;">
+      <li>CSteady Decrease in Error: Both the training and validation MAE curves show a consistent decline, especially in the early epochs, indicating that the model is learning effectively.</li>
+
+      <li>Close Alignment of Curves: The training and validation MAE curves stay close together throughout training, suggesting good generalization and no significant overfitting.</li>
+
+      <li>Convergence After ~30 Epochs: The MAE values for both curves begin to stabilize around epoch 30, indicating that the model is approaching convergence.</li>
+
+      <li>Low Final MAE: The final MAE for both training and validation is approximately 0.17, reflecting a relatively low prediction error and a well-trained model.</li>
+    </ul>
+    </ul>
+  </div>
+
+  <!-- Plot 3 -->
+  <div class="text-center my-5">
+    <h5>Actual vs Predicted</h5>
+    <img src="{{ url_for('static', filename='plots/static_plots_ctual_vs_pred.png') }}" alt="Actual vs Predicted" class="img-fluid mb-3">
+    <ul class="w-75 mx-auto text-start" style="text-align: justify; line-height: 1.8;">
+      <li>Positive Correlation: The scatter plot shows a clear positive trend between actual and predicted values, indicating that the model is generally capturing the underlying pattern.</li>
+
+      <li>Ideal Fit Line: The red dashed line represents the ideal case where predicted = actual. Points closely following this line indicate high prediction accuracy.</li>
+
+      <li>Tight Clustering with Some Outliers: Most points are tightly clustered around the ideal line, especially for lower surface finish values. However, some outliers appear at higher values, suggesting slight deviations in prediction performance at those levels</li>
+
+      <li>Good Model Performance: Overall, the plot demonstrates that the ANN model predicts surface finish accurately, with high consistency in the lower and mid-value ranges.</li>
+    </ul>
+    </ul>
+  </div>
+
+  <!-- Plot 4 -->
+  <div class="text-center my-5">
+    <h5>Residuals Plot</h5>
+    <img src="{{ url_for('static', filename='plots/static_plots_esiduals.png') }}" alt="Residual Plot" class="img-fluid mb-3">
+    <ul class="w-75 mx-auto text-start" style="text-align: justify; line-height: 1.8;">
+      <li>Centered Around Zero: Most residuals (Actual - Predicted) are scattered around the zero line, indicating that the model doesn't have a strong bias in over- or under-prediction.</li>
+
+      <li>Low Residual Spread for Low Surface Finish: For actual surface finish values below ~1.5, residuals are tightly clustered, suggesting higher prediction accuracy in this range</li>
+
+      <li>Increased Variance at Higher Values: Residuals become more dispersed as the actual surface finish increases beyond ~1.5, indicating the model’s prediction accuracy decreases slightly at higher surface finish levels.</li>
+
+      <li>Random Distribution: There is no obvious pattern or trend in the residuals, which supports the assumption of homoscedasticity (constant variance), a good sign that the ANN model is fitting the data appropriately.</li>
+    </ul>
+    </ul>
+  </div>
   
   </div>
   {% endif %}
