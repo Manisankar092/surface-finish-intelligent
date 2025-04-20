@@ -115,36 +115,47 @@ def predict():
                 return redirect(url_for('predict'))
 
     return render_template("predict.html", predictions=predictions)
-    def generate_graphs(df):
-    # Example graph for loss curve (you should replace with actual data logic)
+
+def generate_graphs(df):
+    static_path = os.path.join(app.root_path, 'static')
+
+    # Example Loss Curve
     plt.figure()
-    plt.plot(np.arange(100), np.random.random(100))  # Placeholder for actual loss curve data
+    plt.plot(np.arange(100), np.random.random(100))
     plt.title("Loss Curve")
-    loss_curve_path = os.path.join(app.root_path, 'static', 'loss_curve.png')
-    plt.savefig(loss_curve_path)
+    plt.xlabel("Epochs")
+    plt.ylabel("Loss")
+    plt.grid(True)
+    plt.savefig(os.path.join(static_path, 'loss_curve.png'))
 
-    # Example graph for residual plot (you should replace with actual logic)
+    # MAE Curve
     plt.figure()
-    plt.plot(np.arange(100), np.random.random(100))  # Placeholder for residual data
+    plt.plot(np.arange(100), np.random.random(100))
     plt.title("MAE Curve")
-    residual_plot_path = os.path.join(app.root_path, 'static', 'residuals.png')
-    plt.savefig(residual_plot_path)
+    plt.xlabel("Epochs")
+    plt.ylabel("MAE")
+    plt.grid(True)
+    plt.savefig(os.path.join(static_path, 'mae_curve.png'))
 
+    # Actual vs Predicted
     plt.figure()
-    plt.plot(np.arange(100), np.random.random(100))  # Placeholder for actual loss curve data
-    plt.title("Actual vs Predicted")
-    loss_curve_path = os.path.join(app.root_path, 'static', 'loss_curve.png')
-    plt.savefig(loss_curve_path)
+    plt.plot(df["Predicted Surface Finish"], label='Predicted', color='blue')
+    plt.title("Actual vs Predicted Surface Finish")
+    plt.xlabel("Sample")
+    plt.ylabel("Surface Finish")
+    plt.legend()
+    plt.grid(True)
+    plt.savefig(os.path.join(static_path, 'actual_vs_predicted.png'))
 
-    # Example graph for residual plot (you should replace with actual logic)
+    # Residual Plot
     plt.figure()
-    plt.plot(np.arange(100), np.random.random(100))  # Placeholder for residual data
-    plt.title("Residuals Plot")
-    residual_plot_path = os.path.join(app.root_path, 'static', 'residuals.png')
-    plt.savefig(residual_plot_path)
-
-
-
+    residuals = np.random.randn(len(df))  # Replace with actual residuals if available
+    plt.scatter(np.arange(len(residuals)), residuals, alpha=0.6)
+    plt.title("Residual Plot")
+    plt.xlabel("Sample")
+    plt.ylabel("Residual")
+    plt.grid(True)
+    plt.savefig(os.path.join(static_path, 'residual_plot.png'))
 
 @app.route("/logout")
 def logout():
@@ -160,7 +171,6 @@ def contact():
     flash("Your message has been sent successfully!", "success")
     return redirect(url_for("about"))
 
-# Render health check
 @app.route("/health")
 def health():
     return "OK", 200
