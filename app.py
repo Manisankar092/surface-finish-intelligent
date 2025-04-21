@@ -2,8 +2,8 @@ import os
 import traceback
 
 # Force CPU usage and suppress TensorFlow logs
-os.environ['CUDA_VISIBLE_DEVICES'] = ''
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ['CUDA_VISIBLE_DEVICES'] = ''  # Disable GPU
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # Suppress TensorFlow logs
 os.environ['XLA_FLAGS'] = '--xla_gpu_cuda_data_dir='
 os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'false'
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
@@ -25,13 +25,20 @@ app.secret_key = "my_secret_key"
 model_path = os.path.join(app.root_path, "model.h5")
 scaler_path = os.path.join(app.root_path, "scaler.pkl")
 
-try:
-    model = tf.keras.models.load_model(model_path)
-    scaler = joblib.load(scaler_path)
-except Exception as e:
-    print("Model/scaler loading error:", traceback.format_exc())
-    model = None
-    scaler = None
+# Function to load model and scaler with proper error handling
+def load_model_and_scaler():
+    try:
+        model = tf.keras.models.load_model(model_path)
+        scaler = joblib.load(scaler_path)
+        print("Model and scaler loaded successfully")
+        return model, scaler
+    except Exception as e:
+        print("Error loading model/scaler:", traceback.format_exc())
+        return None, None
+
+# Load model and scaler at the beginning
+model, scaler = load_model_and_scaler()
+
 
 expected_columns = ["Speed", "Feed", "DOC"]
 users = {}
