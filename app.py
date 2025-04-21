@@ -3,46 +3,41 @@ import traceback
 import tensorflow as tf
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import pandas as pd
+import numpy as np
 import joblib
+import matplotlib.pyplot as plt
 
 # Force CPU usage and suppress TensorFlow logs
-os.environ['CUDA_VISIBLE_DEVICES'] = ''  # Disable GPU
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # Suppress TensorFlow logs
+os.environ['CUDA_VISIBLE_DEVICES'] = ''
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 os.environ['XLA_FLAGS'] = '--xla_gpu_cuda_data_dir='
 os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'false'
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
-# Log where TensorFlow is running
+# Log whether running on CPU or GPU
 print("TensorFlow running on:", "GPU" if tf.config.list_physical_devices('GPU') else "CPU")
 
-# Flask app setup
 app = Flask(__name__)
 app.secret_key = "my_secret_key"
 
-# Model and scaler paths
-model_path = os.path.join(app.root_path, "model_v2")  # Update to your SavedModel directory
+# Paths to model and scaler
+model_path = os.path.join(app.root_path, "model.h5")
 scaler_path = os.path.join(app.root_path, "scaler.pkl")
 
-# Load model and scaler (Only load once to save memory)
-def load_model_and_scaler():
-    try:
-        # Load model in SavedModel format
-        model = tf.keras.models.load_model(model_path)
-        scaler = joblib.load(scaler_path)
-        print("Model and scaler loaded successfully")
-        return model, scaler
-    except Exception as e:
-        print("Error loading model/scaler:", traceback.format_exc())
-        return None, None
+# Load model and scaler
+try:
+    model = tf.keras.models.load_model(model_path)
+    scaler = joblib.load(scaler_path)
+except Exception as e:
+    print("Error loading model/scaler:", traceback.format_exc())
+    model = None
+    scaler = None
 
-expected_columns = ["Speed", "Feed", "DOC"]
-users = {}
+expected_columns = ["Speed", "Feed", "Depth of Cut"]  # Adjust to your actual input columns
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
-
+@app.route('/')
+def no_home():
+    return '', 204  # No homepage
 
 @app.route("/predict", methods=["GET", "POST"])
 def predict():
@@ -79,6 +74,7 @@ def predict():
 
 def generate_graphs(df):
     static_path = os.path.join(app.root_path, 'static')
+    os.makedirs(static_path, exist_ok=True)
 
     # Example Loss Curve
     plt.figure()
@@ -110,14 +106,13 @@ def generate_graphs(df):
 
     # Residual Plot
     plt.figure()
-    residuals = np.random.randn(len(df))  # Replace with actual residuals if available
+    residuals = np.random.randn(len(df))  # Placeholder for real residuals
     plt.scatter(np.arange(len(residuals)), residuals, alpha=0.6)
     plt.title("Residual Plot")
     plt.xlabel("Sample")
     plt.ylabel("Residual")
     plt.grid(True)
     plt.savefig(os.path.join(static_path, 'residual_plot.png'))
-
 
 @app.route("/health")
 def health():
