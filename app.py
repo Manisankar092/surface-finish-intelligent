@@ -36,52 +36,11 @@ except Exception as e:
 expected_columns = ["Speed", "Feed", "DOC"]
 users = {}
 
-@app.route('/')
-def home():
-    return render_template("home.html")
-
 @app.route('/about')
 def about():
     return render_template('about.html')
 
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        email = request.form.get("email")
-        password = request.form.get("password")
-        if users.get(email) == password:
-            session['user'] = email
-            flash("Login successful!", "success")
-            return redirect(url_for('predict'))
-        else:
-            flash("Invalid email or password!", "danger")
-            return redirect(url_for('login'))
-    return render_template("login.html")
 
-@app.route("/signup", methods=["GET", "POST"])
-def signup():
-    if request.method == "POST":
-        email = request.form.get("email")
-        password = request.form.get("password")
-        confirm_password = request.form.get("confirm_password")
-
-        if not email or not password or not confirm_password:
-            flash("Please fill in all fields!", "danger")
-            return redirect(url_for('signup'))
-
-        if password != confirm_password:
-            flash("Passwords do not match!", "danger")
-            return redirect(url_for('signup'))
-
-        if email in users:
-            flash("Email already exists. Please login.", "warning")
-            return redirect(url_for('login'))
-
-        users[email] = password
-        session['user'] = email
-        flash("Account created successfully!", "success")
-        return redirect(url_for("predict"))
-    return render_template("signup.html")
 
 @app.route("/predict", methods=["GET", "POST"])
 def predict():
@@ -157,19 +116,6 @@ def generate_graphs(df):
     plt.grid(True)
     plt.savefig(os.path.join(static_path, 'residual_plot.png'))
 
-@app.route("/logout")
-def logout():
-    session.pop('user', None)
-    flash("You have been logged out.", "info")
-    return redirect(url_for('login'))
-
-@app.route("/contact", methods=["POST"])
-def contact():
-    name = request.form.get("name")
-    email = request.form.get("email")
-    message = request.form.get("message")
-    flash("Your message has been sent successfully!", "success")
-    return redirect(url_for("about"))
 
 @app.route("/health")
 def health():
