@@ -1,5 +1,9 @@
 import os
 import traceback
+import tensorflow as tf
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+import pandas as pd
+import joblib
 
 # Force CPU usage and suppress TensorFlow logs
 os.environ['CUDA_VISIBLE_DEVICES'] = ''  # Disable GPU
@@ -8,26 +12,21 @@ os.environ['XLA_FLAGS'] = '--xla_gpu_cuda_data_dir='
 os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'false'
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
-import tensorflow as tf
-from flask import Flask, render_template, request, redirect, url_for, session, flash
-import pandas as pd
-import numpy as np
-import joblib
-import matplotlib.pyplot as plt
-
 # Log where TensorFlow is running
 print("TensorFlow running on:", "GPU" if tf.config.list_physical_devices('GPU') else "CPU")
 
+# Flask app setup
 app = Flask(__name__)
 app.secret_key = "my_secret_key"
 
-# Load model and scaler paths
-model_path = os.path.join(app.root_path, "model.h5")
+# Model and scaler paths
+model_path = os.path.join(app.root_path, "model_v2")  # Update to your SavedModel directory
 scaler_path = os.path.join(app.root_path, "scaler.pkl")
 
-# Function to load model and scaler with proper error handling
+# Load model and scaler (Only load once to save memory)
 def load_model_and_scaler():
     try:
+        # Load model in SavedModel format
         model = tf.keras.models.load_model(model_path)
         scaler = joblib.load(scaler_path)
         print("Model and scaler loaded successfully")
@@ -35,10 +34,6 @@ def load_model_and_scaler():
     except Exception as e:
         print("Error loading model/scaler:", traceback.format_exc())
         return None, None
-
-# Load model and scaler at the beginning
-model, scaler = load_model_and_scaler()
-
 
 expected_columns = ["Speed", "Feed", "DOC"]
 users = {}
